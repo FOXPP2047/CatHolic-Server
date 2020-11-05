@@ -32,6 +32,6 @@ passport.deserializeUser(User.deserializeUser());
 app.use("/", authRoutes);
 app.use("/", userRoutes);
 
-app.listen(80, function() {
+app.listen(8000, function() {
     console.log('Server initialized - production');
 });
