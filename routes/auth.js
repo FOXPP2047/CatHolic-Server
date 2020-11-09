@@ -64,6 +64,18 @@ router.post("/scores", authMiddlewares.isLoggedIn, (req, res) => {
 });
 
 //scores logic
+router.post("/recentLogin", authMiddlewares.isLoggedIn, (req, res) => {
+    console.log(req.body.recentTime);
+    User.updateOne({_id: req.user._id}, {
+        scores: req.user.scores + (Number)(req.body.recentTime),  
+    }, function(err, res) {
+        if (err) console.log(err);
+    });
+
+    return res.sendStatus(200);
+});
+
+//scores logic
 router.post("/buy", authMiddlewares.isLoggedIn, (req, res) => {
     if(req.user.scores >= 10) {
         User.updateOne({_id: req.user._id}, {
