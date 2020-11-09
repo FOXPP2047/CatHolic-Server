@@ -8,8 +8,8 @@ const User = require('../models/user.js');
 
 //Registration Logic
 router.post("/register", (req, res) => {
-    let newUser = new User({ username: req.body.username, scores: 0, update: 1, items : [] });
-
+    let newUser = new User({ username: req.body.username, scores: 0, update: 1, 
+                            items : [], locations : [], recentLogin : "", recentLogout : "" });
     User.register(newUser, req.body.password, (err, createdUser) => {
         if(err) {
             res.status(500).send({ error: "Error, registering the user!" });
@@ -25,14 +25,30 @@ router.post("/register", (req, res) => {
 //Login Logic
 router.post("/login", passport.authenticate("local"), (req, res) => {
     let userBasicInfo = { username: req.user.username };
-    console.log("user logged in " + req.user.username);
+    User.updateOne({_id: req.user._id}, {
+        recentLogin : req.body.time
+    }, function(err, res) {
+        if (err) console.log(err);
+        else {
+            console.log("user logged in " + req.user.username + " at " + req.body.time);
+        }
+    });
     return res.json(userBasicInfo);
 });
 
 //Log out Logic
 router.post("/logout", authMiddlewares.isLoggedIn, (req, res) => {
-    req.logOut();
-    console.log(req.body.username + " log out!");
+    console.log(req.body.time);
+    User.updateOne({_id: req.user._id}, {
+        recentLogout : req.body.time
+    }, function(err, res) {
+        if (err) console.log(err);
+        else {
+            console.log(req.body.username + " log out!");
+            req.logOut();
+        }
+    });
+    
     return res.sendStatus(200);
 });
 
@@ -49,10 +65,9 @@ router.post("/scores", authMiddlewares.isLoggedIn, (req, res) => {
 
 //scores logic
 router.post("/buy", authMiddlewares.isLoggedIn, (req, res) => {
-    
     if(req.user.scores >= 10) {
         User.updateOne({_id: req.user._id}, {
-            $push : { items : req.body.itemName },
+            $push : { items : req.body.itemName, locations : req.body.itemLocation },
             scores: req.user.scores - 10
         }, function(err, res) {
             if (err) console.log(err);

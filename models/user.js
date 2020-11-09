@@ -7,7 +7,10 @@ let userSchma = new mongoose.Schema({
     password : String,
     scores : Number,
     update : Number, 
-    items : [String]
+    items : [String],
+    locations : [Number],
+    recentLogin : String,
+    recentLogout : String
 });
 
 userSchma.plugin(passportLocalMongoose);
