@@ -38,7 +38,7 @@ router.post("/login", passport.authenticate("local"), (req, res) => {
 
 //Log out Logic
 router.post("/logout", authMiddlewares.isLoggedIn, (req, res) => {
-    console.log(req.body.time);
+    //console.log(req.body.time);
     User.updateOne({_id: req.user._id}, {
         recentLogout : req.body.time
     }, function(err, res) {
@@ -49,6 +49,16 @@ router.post("/logout", authMiddlewares.isLoggedIn, (req, res) => {
         }
     });
     
+    return res.sendStatus(200);
+});
+
+router.post("/update", authMiddlewares.isLoggedIn, (req, res) => {
+    User.updateOne({_id: req.user._id}, {
+        scores: (Number)(req.body.number),
+    }, function(err, res) {
+        if(err) console.log(err);
+    });
+
     return res.sendStatus(200);
 });
 
