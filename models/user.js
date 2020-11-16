@@ -6,7 +6,7 @@ let userSchma = new mongoose.Schema({
     username : String,
     password : String,
     scores : Number,
-    update : Number, 
+    updates : Number, 
     items : [String],
     locations : [Number],
     recentLogin : String,
