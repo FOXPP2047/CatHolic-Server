@@ -111,6 +111,11 @@ router.post("/updatebutton", authMiddlewares.isLoggedIn, (req, res) => {
             if (err) console.log(err);
         });
     } else {
+        User.updateOne({_id: req.user._id}, {
+            scores : count,
+        }, function(err, res) {
+            if (err) console.log(err);
+        });
         console.log("You don't have much scores to buy an item")
     }
 
