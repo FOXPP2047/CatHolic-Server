@@ -87,15 +87,21 @@ router.post("/recentLogin", authMiddlewares.isLoggedIn, (req, res) => {
 
 //scores logic
 router.post("/buy", authMiddlewares.isLoggedIn, (req, res) => {
-    if(req.body.number >= 10) {
+    let count = req.body.number;
+    if(count >= 10) {
         User.updateOne({_id: req.user._id}, {
-            scores: req.body.number - 10,
+            scores: count - 10,
             $push : { items : req.body.itemName, locations : req.body.itemLocation },
         }, function(err, res) {
             if (err) console.log(err);
         });
     } else {
-        console.log("You don't have many scores to buy an item")
+        User.updateOne({_id: req.user._id}, {
+            scores : count,
+        }, function(err, res) {
+            if (err) console.log(err);
+        });
+        console.log("You don't have much scores to buy an item")
     }
 
     return res.sendStatus(200);
