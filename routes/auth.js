@@ -132,14 +132,15 @@ router.post("/autocount", authMiddlewares.isLoggedIn, (req, res) => {
     let index = (Number)(req.body.index);
     let newAutoCount = (Number)(req.body.count);
     let strIndex = index.toString();
-    var update = {"$set": {} };
-    update["$set"]["autoCount." + strIndex] = newAutoCount;
+    var valueToUpdate = {"$set": {} };
+    valueToUpdate["$set"]["autoCount." + strIndex] = newAutoCount;
 
-    User.updateOne({_id: req.user._id}, {
-        update,
-    }, function(err, res) {
-        if (err) console.log(err);
-    });
+    User.update({_id: req.user._id}, valueToUpdate);
+    // User.updateOne({_id: req.user._id}, {
+    //     valueToUpdate,
+    // }, function(err, res) {
+    //     if (err) console.log(err);
+    // });
 
     return res.sendStatus(200);
 });
