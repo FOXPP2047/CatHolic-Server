@@ -131,20 +131,34 @@ router.post("/updatebutton", authMiddlewares.isLoggedIn, (req, res) => {
 router.post("/autocount", authMiddlewares.isLoggedIn, (req, res) => {
     let index = (Number)(req.body.index);
     let newAutoCount = (Number)(req.body.count);
-    let strIndex = index.toString();
-    var valueToUpdate = {"$set": {} };
-    valueToUpdate["$set"]["autoCount." + strIndex] = newAutoCount;
+    let setValue = {};
+    setValue["autoCount." + index] = newAutoCount;
 
-    User.update({_id: req.user._id}, valueToUpdate);
-    // User.updateOne({_id: req.user._id}, {
-    //     valueToUpdate,
-    // }, function(err, res) {
-    //     if (err) console.log(err);
-    // });
+    User.updateOne({_id: req.user._id}, {
+        "$set" : setValue,
+        scores : (Number)(req.body.score),
+    }, function(err, res) {
+        if (err) console.log(err);
+    });
 
     return res.sendStatus(200);
 });
 
+router.post("/autotime", authMiddlewares.isLoggedIn, (req, res) => {
+    let index = (Number)(req.body.index);
+    let newAutoTime = (Number)(req.body.time);
+    let setValue = {};
+    setValue["autoTime." + index] = newAutoTime;
+
+    User.updateOne({_id: req.user._id}, {
+        "$set" : setValue,
+        scores : (Number)(req.body.score),
+    }, function(err, res) {
+        if (err) console.log(err);
+    });
+
+    return res.sendStatus(200);
+});
 
 // router.get('/logout', (req, res) => { 
 //     req.logout(); 
