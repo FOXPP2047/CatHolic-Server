@@ -9,7 +9,7 @@ const User = require('../models/user.js');
 //Registration Logic
 router.post("/register", (req, res) => {
     let newUser = new User({ username: req.body.username, scores: 0, updates: 1, 
-                            items : [], locations : [], auto : [], recentLogin : "", recentLogout : "" });
+                            items : [], locations : [], auto : [{count: 0, time: 10}], recentLogin : "", recentLogout : "" });
     User.register(newUser, req.body.password, (err, createdUser) => {
         if(err) {
             res.status(500).send({ error: "Error, registering the user!" });
