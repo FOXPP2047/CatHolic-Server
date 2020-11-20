@@ -128,6 +128,19 @@ router.post("/updatebutton", authMiddlewares.isLoggedIn, (req, res) => {
     return res.sendStatus(200);
 });
 
+router.post("/autocount", authMiddlewares.isLoggedIn, (req, res) => {
+    let index = (Number)(req.body.index);
+    let newAutoCount = (Number)(req.body.count);
+
+    User.updateOne({_id: req.user._id}, {
+        $set : { "autoCount.$.index" : newAutoCount },
+    }, function(err, res) {
+        if (err) console.log(err);
+    });
+
+    return res.sendStatus(200);
+});
+
 
 // router.get('/logout', (req, res) => { 
 //     req.logout(); 
