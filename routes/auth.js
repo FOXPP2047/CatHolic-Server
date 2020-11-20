@@ -134,7 +134,7 @@ router.post("/autocount", authMiddlewares.isLoggedIn, (req, res) => {
     let strIndex = index.toString();
 
     User.updateOne({_id: req.user._id}, {
-        $set : { "autoCount.strIndex" : newAutoCount },
+        $set : { "autoCount.0" : newAutoCount },
     }, function(err, res) {
         if (err) console.log(err);
     });
