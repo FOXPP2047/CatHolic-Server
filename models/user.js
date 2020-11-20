@@ -9,10 +9,8 @@ let userSchma = new mongoose.Schema({
     updates : Number, 
     items : [String],
     locations : [Number],
-    auto : [{
-        count: Number,
-        time: Number,
-    }],
+    autoCount : [Number],
+    autoTime : [Number],
     recentLogin : String,
     recentLogout : String
 });

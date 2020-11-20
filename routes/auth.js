@@ -9,7 +9,7 @@ const User = require('../models/user.js');
 //Registration Logic
 router.post("/register", (req, res) => {
     let newUser = new User({ username: req.body.username, scores: 0, updates: 1, 
-                            items : [], locations : [], auto : [], recentLogin : "", recentLogout : "" });
+                            items : [], locations : [], autoCount : [], autoTime : [], recentLogin : "", recentLogout : "" });
     User.register(newUser, req.body.password, (err, createdUser) => {
         if(err) {
             res.status(500).send({ error: "Error, registering the user!" });
@@ -91,7 +91,7 @@ router.post("/buy", authMiddlewares.isLoggedIn, (req, res) => {
     if(count >= 10) {
         User.updateOne({_id: req.user._id}, {
             scores: count - 10,
-            $push : { items : req.body.itemName, locations : req.body.itemLocation, auto : {count: 0, time: 10} },
+            $push : { items : req.body.itemName, locations : req.body.itemLocation, autoCount : 0, autoTime : 10},
         }, function(err, res) {
             if (err) console.log(err);
         });
